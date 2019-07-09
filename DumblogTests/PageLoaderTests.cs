@@ -1,0 +1,6 @@
+﻿namespace DumblogTests
+{
+    class PageLoaderTests
+    {
+    }
+}
