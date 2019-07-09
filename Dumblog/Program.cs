@@ -6,7 +6,7 @@ namespace Dumblog
     {
         static void Main(string[] args)
         {
-            Server server = new Server(8080);
+            Server server = new Server(999);
             while (server.IsActive)
             {
 

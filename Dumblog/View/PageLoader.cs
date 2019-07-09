@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Dumblog.View
@@ -17,9 +18,34 @@ namespace Dumblog.View
         public string LoadFile(string path)
         {
             path = GetSanitizedPath(path);
-            if (!string.IsNullOrEmpty(path))
-                return TryLoadMarkdownAtPath(path);
-            return string.Empty;
+            if (string.IsNullOrEmpty(path))
+                return string.Empty;
+            if (path == "github-pull")
+                PullNewFilesFromGitHub();
+            return TryLoadMarkdownAtPath(path);
+        }
+
+        private void PullNewFilesFromGitHub()
+        {
+            try
+            {
+                var process = new Process()
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "/bin/bash",
+                        Arguments = $"-c \"git pull\"",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    }
+                };
+                process.Start();
+            }
+            catch
+            {
+                Console.WriteLine("Failed to start the git process for updating");
+            }
         }
 
         private string GetSanitizedPath(string path)
@@ -28,7 +54,7 @@ namespace Dumblog.View
             if (string.IsNullOrEmpty(path))
                 path = "index";
             else if (path.StartsWith("..") || Path.IsPathRooted(path))
-                throw new System.Exception();   // TODO:  Throw correct exception
+                throw new Exception();   // TODO:  Throw correct exception
             else if (path.EndsWith(".ico"))
                 path = string.Empty;
             return path;
