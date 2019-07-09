@@ -48,5 +48,3 @@ Your main should be "looking down" towards the interface layer of the applicatio
 
 ## Switch statements
 
-
-## 
