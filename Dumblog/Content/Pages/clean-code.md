@@ -44,7 +44,11 @@ When implementing an interface, if the child does not implement all features of 
 Your main should be "looking down" towards the interface layer of the application and the domain should be "looking up" to the interface layer of the application. In this way we won't end up with a main that starts from the very top level of your application and then goes down to the deepest, lowest level of your application. It is essentially haulted by the interface layer which removes a great deal of dependencies; the same for the inverse ("looking up" towards the interfaces from the domain).
 
 ## Comments
-
+In most cases comments are not needed if the code is well written and readable.
 
 ## Switch statements
+
+
+## Classes
+
 
