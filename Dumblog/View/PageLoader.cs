@@ -50,8 +50,13 @@ namespace Dumblog.View
 
         private string GetSanitizedPath(string path)
         {
+
             path = path.Replace("\\", "/");
+            if (path.StartsWith("/"))
+                path = path.Substring(1, path.Length - 1);
             if (string.IsNullOrEmpty(path))
+                path = "index";
+            else if (path.Equals("/"))
                 path = "index";
             else if (path.StartsWith("..") || Path.IsPathRooted(path))
                 throw new Exception();   // TODO:  Throw correct exception

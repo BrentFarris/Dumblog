@@ -7,8 +7,6 @@ namespace Dumblog.Network
 {
     public class DumblogServer
     {
-        static readonly object _locker = new object();
-
         PageLoader _loader;
 
         public void Configure(IApplicationBuilder app)
@@ -19,24 +17,22 @@ namespace Dumblog.Network
 
         private async Task HttpRequestDelegate(HttpContext context)
         {
-            try
-            {  
-                //remove / prefix
-                var localPath = context.Request.Path.Value.Substring(1, context.Request.Path.Value.Length - 1);
-
-                string responseString;
-
-                lock (_locker)
-                {
-                    responseString = _loader.LoadFile(localPath);
-                }
-
-                await context.Response.WriteAsync(responseString);
-            }
-            catch (System.Exception ex)
+            if(await HandleFavicon(context))
             {
-                throw ex;
+                return;
             }
+            string responseString = _loader.LoadFile(context.Request.Path.Value);
+            await context.Response.WriteAsync(responseString);
+        }
+
+        private async Task<bool> HandleFavicon(HttpContext context)
+        {
+            if (context.Request.Path.Value.Equals("/favicon.ico"))
+            {
+                await context.Response.WriteAsync(string.Empty);
+                return true;
+            }
+            return false;
         }
     }
 }
