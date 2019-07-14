@@ -30,7 +30,7 @@ namespace Dumblog.Network
 
         private bool IsFavicon(HttpContext context)
         {
-            return (context.Request.Path.Value.Equals("/favicon.ico"));
+            return context.Request.Path.Value.Equals("/favicon.ico");
         }
     }
 }
