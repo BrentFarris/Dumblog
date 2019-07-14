@@ -29,7 +29,7 @@ Asynchronous programming is art of using a method pointer to be called at a unde
 
 ### Final Thoughts
 
-In a game, my favorite solution is the queue. It is ideal for handling a *stream* of messages in a stateless way.
+In a game or other realtime application, my favorite solution is the queue. It is ideal for handling a *stream* of messages in a stateless way.
 
 For transient transactions, my favorite solution is the Task. It may not be stateless, but it is great at consolidating the transactions control logic into a single location.
 
