@@ -23,11 +23,11 @@ Having multiple listeners to a single resource. This may be dangerous because it
 ### Layer Mixing
 The act of a lower level service (data) calling into a higher level service (view). Now the data layer needs to know about view specific cases so that it can call the correct method on completion. 
 
-## Daisy Chaining
+### Daisy Chaining
 
 Also known as the train wreck, the act of having a middle layer which passes the responsibility of calling the method to something else. Here we can quickly loose track of our stack as the flow down into lower level modules gets branched into other modules.
 
-## Inline Control
+### Inline Control
 The idea that we can consolidate our control code into a single method. This is only possible in tasks due to the `async` language feature.
 
 ### Final Thoughts
