@@ -27,6 +27,6 @@ Often when a private api needs to be refactored its because of competing flows. 
 The second largest problem is dependencies. The spaghetti of reusing other logic adhoc via service location. The anti-pattern of lower level services calling into higher level services.. *even with indirection*. 
 
 
-### 5) Do the fucking work
+### 5) Do the work
 
 
