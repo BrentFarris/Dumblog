@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Dumblog.View
@@ -91,7 +92,11 @@ namespace Dumblog.View
         private string TryLoadMarkdownAtPath(string path)
         {
             Console.WriteLine($"Requesting: {path}");
-            string fullPath = $"../../../Content/Pages/{path.ToLower()}.md";
+            string fullPath;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                fullPath = $"../../../Content/Pages/{path.ToLower()}.md";
+            else
+                fullPath = $"Content/Pages/{path.ToLower()}.md";
             if (!File.Exists(fullPath))
                 return string.Empty;
             string contents = File.ReadAllText(fullPath);
