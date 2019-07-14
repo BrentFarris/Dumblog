@@ -24,6 +24,7 @@ namespace Dumblog.Network
             else
             {
                 string responseString = _loader.LoadFile(context.Request.Path.Value);
+		System.Console.WriteLine($"Page is being requested: {context.Request.Path.Value}");
                 await context.Response.WriteAsync(responseString);
             }
         }
