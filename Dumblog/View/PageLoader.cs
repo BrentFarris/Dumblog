@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Dumblog.View
 {
     public class PageLoader
     {
+        private const int NEW_UPDATES_PAGES_COUNT = 10;
         private const string MARKDOWN_REPLACE_TEXT = "MARKDOWN_REPLACE";
-        private readonly string _template;
+        private const string RECENT_LIST_REPLACE_TEXT = "RECENT_LIST";
+        private readonly string _template = string.Empty;
+        private string _indexRecents = string.Empty;
         MarkdownWrapper _markdown = new MarkdownWrapper();
 
         public PageLoader()
         {
             _template = File.ReadAllText("Content/template.html");
+            RefreshRecentList();
         }
 
         public string LoadFile(string path)
@@ -20,7 +28,7 @@ namespace Dumblog.View
             path = GetSanitizedPath(path);
             if (string.IsNullOrEmpty(path))
                 return string.Empty;
-            if (path == "github-pull")
+            else if (path == "github-pull")
                 PullNewFilesFromGitHub();
             return TryLoadMarkdownAtPath(path);
         }
@@ -41,11 +49,32 @@ namespace Dumblog.View
                     }
                 };
                 process.Start();
+                RefreshRecentList();
             }
             catch
             {
                 Console.WriteLine("Failed to start the git process for updating");
             }
+        }
+
+        private void RefreshRecentList()
+        {
+            var files = new DirectoryInfo("Content/Pages")
+                .GetFiles("**.*md", SearchOption.AllDirectories)
+                .OrderByDescending(f => f.LastWriteTime)
+                .Take(NEW_UPDATES_PAGES_COUNT)
+                .Select(f => Path.GetRelativePath("Content/Pages", f.FullName).Replace(".md", ""))
+                .ToList();
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < files.Count; i++)
+            {
+                if (files[i].EndsWith("index"))
+                    continue;
+                string displayName = textInfo.ToTitleCase(files[i].Replace('-', ' ')).Replace(".Md", "");
+                builder.AppendLine($"**[{displayName}](/{files[i]})**\n");
+            }
+            _indexRecents = builder.ToString();
         }
 
         private string GetSanitizedPath(string path)
@@ -66,10 +95,16 @@ namespace Dumblog.View
         private string TryLoadMarkdownAtPath(string path)
         {
             Console.WriteLine($"Requesting: {path}");
-            string fullPath = $"../../../Content/Pages/{path.ToLower()}.md";
+            string fullPath;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                fullPath = $"../../../Content/Pages/{path.ToLower()}.md";
+            else
+                fullPath = $"Content/Pages/{path.ToLower()}.md";
             if (!File.Exists(fullPath))
                 return string.Empty;
             string contents = File.ReadAllText(fullPath);
+            if (path == "index")
+                contents = contents.Replace(RECENT_LIST_REPLACE_TEXT, _indexRecents);
             return GetReplacementText(contents);
         }
 
