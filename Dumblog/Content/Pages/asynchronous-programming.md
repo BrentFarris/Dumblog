@@ -1,4 +1,5 @@
 # Asynchronous Programming
+Nicholas Ventimiglia
 ___
 
 Asynchronous programming is strategy of calling a method at a undetermined later time. Generally this method set at runtime, and because of this we introduce *race conditions*.
