@@ -20,8 +20,8 @@ Often when a service api needs to be refactored it was because it was over engin
 - Flag horizontal level dependencies (services inside services).
 - Flag multiple counters, locks, and other flow control statements.
 
-### 4) Estimate a refactor of the private API
-Often when a private api needs to be refactored its because of competing flows. The train wreck of multiple inputs and juggling of asynchronous logic. If this is the case, review the document on async behaviours, choose the best *one* for your use case, and continue. 
+### 4) Estimate a refactor of the private procedures
+Often when a private procedures needs to be refactored its because of competing flows. The train wreck of multiple inputs and juggling of asynchronous logic. If this is the case, review the document on async behaviours, choose the best *one* for your use case, and continue. 
 
 The second largest problem is dependencies. The spaghetti of reusing other logic adhoc via service location. The anti-pattern of lower level services calling into higher level services.. *even with indirection*. 
 
