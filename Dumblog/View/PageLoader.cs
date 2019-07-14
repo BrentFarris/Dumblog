@@ -56,8 +56,6 @@ namespace Dumblog.View
                 path = path.Substring(1, path.Length - 1);
             if (string.IsNullOrEmpty(path))
                 path = "index";
-            else if (path.Equals("/"))
-                path = "index";
             else if (path.StartsWith("..") || Path.IsPathRooted(path))
                 throw new Exception();   // TODO:  Throw correct exception
             else if (path.EndsWith(".ico"))
