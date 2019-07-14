@@ -12,7 +12,7 @@ ___
 ### 2) Estimate a refactor of the public API
 Often when a service api needs to be refactored it was because it was over engineered to begin with. Whatever its problem, the bigger problem is its spread. Now consuming modules are implementing and extending the bad practice.
 
-### 3) Review the internal procedures
+### 3) Review the private procedures
 - Flag large methods, a method should be no more than 10 lines of code.
 - Flag bad practices. Here are a few common ones for services.
 - Flag competing async philosophies (callbacks, adapters, tasks, queues, ect.).
