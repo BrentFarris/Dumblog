@@ -21,16 +21,18 @@ Asynchronous programming is art of using a method pointer to be called at a unde
 
 **Mixing** The act of a lower level service (data) calling into a higher level service (view). While this is often done via a layer of indirection, the core problem is still there : The data layer needs to know about view specific cases so that it can call the correct method on completion. 
 
+> In Adapters, the listener can be extended incorrectly.
+
 **Chained** Because the service has access to a pointer to the view code, it is very easy to wrap this into another call and *pass the buck* in a daisy chain. We can quickly loose track of our stack and our code starts to look like javascript.
 
 **Inline** The idea that we can consolidate our control code into a single method.
 
 ### Final Thoughts
 
-In a game, my favorite solution is the Queue. It is ideal for handling a *stream* of messages in a stateless way.
+In a game, my favorite solution is the queue. It is ideal for handling a *stream* of messages in a stateless way.
 
 For transient transactions, my favorite solution is the Task. It may not be stateless, but it is great at consolidating the transactions control logic into a single location.
 
-The adapter pattern are a great way to rope in bad callback code. They do the job of standardizing the spaghetti, making it easier to cut. 
+The adapter pattern is a great standardizing complex services with many results.
 
 Callbacks and events are the worst.
