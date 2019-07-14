@@ -1,56 +1,42 @@
 ﻿using Dumblog.View;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace Dumblog.Network
 {
-    public class Server
+    public class DumblogServer
     {
-        public bool IsActive { get; private set; }
-        private readonly HttpListener _listener;
-        private Thread _listenThread;
+        static readonly object _locker = new object();
+
         PageLoader _loader;
 
-        public Server(ushort port)
+        public void Configure(IApplicationBuilder app)
         {
             _loader = new PageLoader();
-            _listener = new HttpListener();
-            _listener.Prefixes.Add($"http://*:{port}/");
-            _listener.Start();
-            _listenThread = new Thread(ReadNetwork);
-            _listenThread.Start();
-            IsActive = true;
+            app.Run(HttpRequestDelegate);
         }
 
-        private async void ReadNetwork()
+        private async Task HttpRequestDelegate(HttpContext context)
         {
-            while (IsActive)
-            {
-                await ContextRequestAsync();
+            try
+            {  
+                //remove / prefix
+                var localPath = context.Request.Path.Value.Substring(1, context.Request.Path.Value.Length - 1);
+
+                string responseString;
+
+                lock (_locker)
+                {
+                    responseString = _loader.LoadFile(localPath);
+                }
+
+                await context.Response.WriteAsync(responseString);
             }
-        }
-
-        private async Task ContextRequestAsync()
-        {
-            HttpListenerContext context = await _listener.GetContextAsync();
-            HttpListenerRequest request = context.Request;
-            HttpListenerResponse response = context.Response;
-            string responseString = _loader.LoadFile(request.Url.LocalPath.Substring(1));
-            byte[] buffer = Encoding.UTF8.GetBytes(responseString);
-            response.ContentLength64 = buffer.Length;
-            Stream output = response.OutputStream;
-            output.Write(buffer, 0, buffer.Length);
-            output.Close();
-        }
-
-        public void Stop()
-        {
-            _listenThread.Abort();
-            _listener.Stop();
-            IsActive = false;
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Dumblog.Network;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Dumblog
 {
@@ -6,11 +7,12 @@ namespace Dumblog
     {
         static void Main(string[] args)
         {
-            Server server = new Server(999);
-            while (server.IsActive)
-            {
-
-            }
+            new WebHostBuilder()
+                 .UseKestrel()
+                 .UseStartup<DumblogServer>()
+                 .UseUrls("http://*:999")
+                 .Build()
+                 .Run();
         }
     }
 }
