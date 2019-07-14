@@ -31,10 +31,12 @@ It is important that the domain model stays concise and conceptual. It should no
 As a better option to interfaces, the application could observe the domain. If domain state changes, the application has the responsibility of updating itself.
 
 #### Example : Navigation
-Navigation is an interesting integration point that can overlap both Domain and Application. Often the domain might want to know 'where we are located in the app' and kick off a navigation request for some reason. This is a pain point because navigation is often complex, async, and we have now muddied our domain logic with *Procedural logic*.
+Navigation is an interesting integration point that can overlap both the Domain and Application. The application is concerned because rendering logic is a platform concern. However, the domain might want to know 'which view is currently presented' and/ or begin a navigation request. e.g. On purchase, route to the receipt view.
 
 Here are some recommendations.
 
 - Implement a navigation model, then let the application observe and handle the act of navigation.
 
 - Implement a completion contract, then let the application level handler implement navigation.
+
+- Dont do anything. We are muddling our domain with view specific concerns and procedural logic.
