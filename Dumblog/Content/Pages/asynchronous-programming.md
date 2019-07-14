@@ -1,5 +1,4 @@
 # Asynchronous Programming
-Nicholas Ventimiglia 2019-07-14 (Init)
 ___
 
 Asynchronous programming is art of using a method pointer to be called at a undetermined later time. Generally this pointer set at runtime, because of this we introduce unknown opportunities for competing flows.... *race conditions*.
@@ -12,6 +11,7 @@ Asynchronous programming is art of using a method pointer to be called at a unde
 | Events    | **YES** | MANY    |**NO** |**NO** | NO    |
 | Queue     | **YES** | MANY*    |**NO** |**NO**|**YES**|
 | TASKS     | NO      |**MONO** |**NO** |**NO** |**YES**|
+
 
 **Stateless** Is good because it means the service does not need to cache or manage the state of the transaction. Generally these transactions are cached as pointers which can not be cached preventing caching of the complete application state.
 

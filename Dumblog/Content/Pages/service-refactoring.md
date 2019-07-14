@@ -1,5 +1,4 @@
 # Service Refactoring
-Nicholas Ventimiglia 2019-07-14 (Init)
 ___
 
 ### 1) Review the public API
