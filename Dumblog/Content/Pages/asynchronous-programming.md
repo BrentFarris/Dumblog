@@ -7,7 +7,7 @@ Asynchronous programming is strategy of calling a method at a undetermined later
 | Solution  |Stateless|Listeners|Mixing |Chained|Inline |
 | --------- |-------------------------------------------|
 | Callbacks | NO      | MANY    |**NO** | YES   | NO    |
-| Adapter   | **YES** |**MONO** |*Maybe*| YES   | NO    |
+| Adapter   | **YES** |**MONO** |YES| YES   | NO    |
 | Events    | **YES** | MANY    |**NO** |**NO** | NO    |
 | Queue     | **YES** | MANY*    |**NO** |**NO**| NO    |
 | Tasks     | NO      |**MONO** |**NO** |**NO** |**YES**|
