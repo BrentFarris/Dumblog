@@ -17,14 +17,14 @@ namespace Dumblog.Network
 
         private async Task HttpRequestDelegate(HttpContext context)
         {
-            if(IsFavicon(context))
+            if (IsFavicon(context))
             {
                 await context.Response.WriteAsync(string.Empty);
             }
             else
             {
                 string responseString = _loader.LoadFile(context.Request.Path.Value);
-		System.Console.WriteLine($"Page is being requested: {context.Request.Path.Value}");
+                System.Console.WriteLine($"Page is being requested: {context.Request.Path.Value}");
                 await context.Response.WriteAsync(responseString);
             }
         }
