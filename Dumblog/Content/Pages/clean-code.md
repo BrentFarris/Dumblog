@@ -1,4 +1,7 @@
 # Clean Code
+Brent Farris
+___
+
 One of the interesting things after coding for almost 10 years now is that clean code is nothing new, it is something that almost every developer I have worked with knows, but every day we fail to participate in creating and maintaining clean code. Of course if we have so much trouble just making clean code in the first place you could imagine that we never spend the time required to clean up our existing code. A fantastic book by Robert "Uncle Bob" Martin named "Clean Code" is where I re-opened my eyes to the practices I should be doing.
 
 ## Functions

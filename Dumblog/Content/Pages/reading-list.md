@@ -1,4 +1,7 @@
 # Reading List
+Brent Farris
+___
+
 I am not usually one to have a reading list, I never really read many books. I think I have a psychogenic belief that I am dyslexic because I have a hard time reading long texts. I even use a screen reader to read most things. However when it comes to code and books I'm really interested in (physics, math, or code) I seem to be able to read those books just fine. So, in light of this fact, I have a new reading list! Here it is in no particular order:
 
 **Clean Code:  [https://amzn.to/2LLvJo7](https://amzn.to/2LLvJo7)**
