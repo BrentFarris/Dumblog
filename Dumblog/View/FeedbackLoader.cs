@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Dumblog.View
 {
-
     /// <summary>
     /// Feedback Page Code
     /// </summary>
@@ -42,10 +41,20 @@ namespace Dumblog.View
             {
                 if (context.Request.Path.Value.Equals("/feedback.html"))
                 {
-                    await ProcessGet(context);
+                    await ReturnGet(context);
                     return true;
                 }
-                else if (context.Request.Path.Value.Equals("/feedback"))
+                else if (context.Request.Path.Value.Equals("/feedback_success.html"))
+                {
+                    await ReturnSuccess(context);
+                    return true;
+                }
+                else if (context.Request.Path.Value.Equals("/feedback_error.html"))
+                {
+                    await ReturnError(context);
+                    return true;
+                }
+                else if (context.Request.Path.Value.Equals("/feedback.post"))
                 {
                     await ProcessPost(context);
                     return true;
@@ -58,7 +67,9 @@ namespace Dumblog.View
             return false;
         }
 
-        async Task ProcessGet(HttpContext context)
+        // Gets
+
+        async Task ReturnGet(HttpContext context)
         {
             Console.WriteLine($"{nameof(FeedbackLoader)} ProcessGet");
 
@@ -66,30 +77,73 @@ namespace Dumblog.View
             await context.Response.WriteAsync(html);
         }
 
+        async Task ReturnError(HttpContext context)
+        {
+            Console.WriteLine($"{nameof(FeedbackLoader)} ReturnError");
+
+            var html = File.ReadAllText("Content/feedback_error.html");
+            await context.Response.WriteAsync(html);
+        }
+
+        async Task ReturnSuccess(HttpContext context)
+        {
+            Console.WriteLine($"{nameof(FeedbackLoader)} ReturnSuccess");
+
+            var html = File.ReadAllText("Content/feedback_success.html");
+            await context.Response.WriteAsync(html);
+        }
+
+        // Redirects
+
+        void RedirectError(HttpContext context)
+        {
+            Console.WriteLine($"{nameof(FeedbackLoader)} RedirectError");
+            context.Response.Redirect("feedback_error.html");
+        }
+
+        void RedirectSuccess(HttpContext context)
+        {
+            Console.WriteLine($"{nameof(FeedbackLoader)} RedirectSuccess");
+            context.Response.Redirect("feedback_success.html");
+        }
+
+        // Post
+
         async Task ProcessPost(HttpContext context)
         {
             Console.WriteLine($"{nameof(FeedbackLoader)} ProcessPost");
 
             Model model = await DeserializeModel(context);
 
-            if (ValidateModel(model))
+            try
             {
-                var smtp = new SmtpClient();
+                if (ValidateModel(model))
+                {
+                    var smtp = new SmtpClient();
 
-                var builder = new StringBuilder();
+                    var builder = new StringBuilder();
 
-                builder.AppendLine($"name: {model.name}");
-                builder.AppendLine($"email: {model.email}");
-                builder.AppendLine(string.Empty);
-                builder.AppendLine($"{model.comments}");
+                    builder.AppendLine($"name: {model.name}");
+                    builder.AppendLine($"email: {model.email}");
+                    builder.AppendLine(string.Empty);
+                    builder.AppendLine($"{model.comments}");
 
-                var mail = new MailMessage(config.from, config.to, config.subject, builder.ToString());
-                smtp.Send(mail);
+                    var mail = new MailMessage(config.from, config.to, config.subject, builder.ToString());
+                    smtp.Send(mail);
+
+                    RedirectSuccess(context);
+                }
+                else
+                {
+                    Console.WriteLine($"{nameof(FeedbackLoader)} ERROR - ValidateModel");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine($"{nameof(FeedbackLoader)} ERROR - ValidateModel");
+                Console.WriteLine($"{nameof(FeedbackLoader)} Exception {ex.Message}");
             }
+
+            RedirectError(context);
         }
 
         async Task<Model> DeserializeModel(HttpContext content)
