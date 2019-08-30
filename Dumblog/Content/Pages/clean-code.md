@@ -50,8 +50,6 @@ Your main should be "looking down" towards the interface layer of the applicatio
 In most cases comments are not needed if the code is well written and readable.
 
 ## Switch statements
+You want to try and move any switch statements as far "up" as possible. When there is a value being switched on, it is usually to construct a specific object or branch to a specific function. By moving switches up to the highest level possible you are able to avoid needless branching in client code.
 
-
-## Classes
-
-
+An example of this would be, if you have an enum for different animal types "cat", "dog", "cow", etc. You would put the switch in a factory class that is responsible for creating the abstract/interfacing object `IAnimal` and return it. This prevents needless switch statements checking types/enums deep within other parts of your application to do branching. This branching logic should always be moved out of code that has no reason to be doing it.
