@@ -34,6 +34,9 @@ Robert Martin (aka Uncle Bob Martin) has been evangelizing clean code for quite 
 ### The Mythical Man-Month: [Amazon Link 1](https://www.amazon.com/Mythical-Man-Month-Essays-Software-Engineering/dp/0201006502) or [Amazon Link 2](https://www.amazon.com/Mythical-Man-Month-Software-Engineering-Anniversary/dp/0201835959)
 
 
+### Masters Of Doom: [Amazon & Audible](https://www.amazon.com/Masters-Doom-Created-Transformed-Culture/dp/0812972155)
+
+
 ### Game Engine Black Book: Wolfenstein 3D [Fabien Sanglard's Website](http://fabiensanglard.net/gebb/index.html)
 ![game-engine-black-book-wolfenstein-3d-fabien-sanglard][2]{style=max-height:140px;float:left;margin-right:5px;margin-bototm:10px;}
 
