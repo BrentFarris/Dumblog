@@ -26,7 +26,7 @@ namespace Dumblog.Network
 
         private async Task HttpRequestDelegate(HttpContext context)
         {
-            if (await _feeback.TryProcess(context))
+            if (await _favicon.TryProcess(context))
             {
                 return;
             }
