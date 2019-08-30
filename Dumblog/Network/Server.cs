@@ -21,12 +21,24 @@ namespace Dumblog.Network
             {
                 await context.Response.WriteAsync(string.Empty);
             }
+            else 
+            if (IsFeedback(context))
+            {
+                System.Console.WriteLine("Page is being requested: feedback.html");
+                string html = FeedbackLoader.Get();
+                await context.Response.WriteAsync(html);
+            }
             else
             {
                 string responseString = _loader.LoadFile(context.Request.Path.Value);
                 System.Console.WriteLine($"Page is being requested: {context.Request.Path.Value}");
                 await context.Response.WriteAsync(responseString);
             }
+        }
+
+        private bool IsFeedback(HttpContext context)
+        {
+            return FeedbackLoader.IsFeedback(context.Request.Path.Value);
         }
 
         private bool IsFavicon(HttpContext context)

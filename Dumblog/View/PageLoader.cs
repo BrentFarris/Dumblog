@@ -8,6 +8,7 @@ using System.Text;
 
 namespace Dumblog.View
 {
+
     public class PageLoader
     {
         private const int NEW_UPDATES_PAGES_COUNT = 10;
