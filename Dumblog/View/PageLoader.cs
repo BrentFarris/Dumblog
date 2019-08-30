@@ -71,8 +71,7 @@ namespace Dumblog.View
             {
                 if (files[i].EndsWith("index"))
                     continue;
-                var fi = new FileInfo($"Content/Pages/{files[i]}.md");
-                DateTime dt = fi.CreationTime;
+                DateTime dt = File.GetCreationTime($"Content/Pages/{files[i]}.md");
                 string displayName = textInfo.ToTitleCase(files[i].Replace('-', ' ')).Replace(".Md", "");
                 builder.AppendLine($"{dt.ToString("MMM dd, yyyy")} >>{{style=font-size:12px;}} **[{displayName}](/{files[i]})**{{style=font-size:18px;}}\n");
             }
