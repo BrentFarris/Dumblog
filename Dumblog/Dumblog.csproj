@@ -17,13 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Content\feedback.html">
+    <None Update="Content\Feedback\feedback.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\feedback_error.html">
+    <None Update="Content\Feedback\feedback_error.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\feedback_success.html">
+    <None Update="Content\Feedback\feedback_success.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\template.html">

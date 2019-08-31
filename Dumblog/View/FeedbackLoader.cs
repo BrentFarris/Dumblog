@@ -12,9 +12,6 @@ namespace Dumblog.View
     /// </summary>
     public class FeedbackLoader
     {
-        string captchaKey = (DateTime.Now.Year + 1).ToString();
-        Config config;
-
         struct Model
         {
             public string name;
@@ -28,35 +25,49 @@ namespace Dumblog.View
             public string to;
             public string from;
             public string subject;
+            public string captcha;
         }
+
+        private const string MARKDOWN_REPLACE_TEXT = "MARKDOWN_REPLACE";
+        private const string MESSAGE_REPLACE_TEXT = "<!--MESSAGE_REPLACE-->";
+
+        private Config config;
+        private readonly string _successHtml = string.Empty;
+        private readonly string _errorHtml = string.Empty;
+        private readonly string _indexHtml = string.Empty;
 
         public FeedbackLoader(Config config)
         {
             this.config = config;
+
+            var template = File.ReadAllText("Content/template.html");
+            _indexHtml = template.Replace(MARKDOWN_REPLACE_TEXT, File.ReadAllText("Content/Feedback/feedback.html"));
+            _errorHtml = _indexHtml.Replace(MESSAGE_REPLACE_TEXT, File.ReadAllText("Content/Feedback/feedback_error.html"));
+            _successHtml = _indexHtml.Replace(MESSAGE_REPLACE_TEXT, File.ReadAllText("Content/Feedback/feedback_success.html"));
         }
 
         public async Task<bool> TryProcess(HttpContext context)
         {
             try
             {
-                if (context.Request.Path.Value.Equals("/feedback.html"))
+                if (context.Request.Method == "POST")
+                {
+                    await ProcessPost(context);
+                    return true;
+                }
+                else if (context.Request.Path.Value.Equals("/feedback"))
                 {
                     await ReturnGet(context);
                     return true;
                 }
-                else if (context.Request.Path.Value.Equals("/feedback_success.html"))
+                else if (context.Request.Path.Value.Equals("/feedback_success"))
                 {
                     await ReturnSuccess(context);
                     return true;
                 }
-                else if (context.Request.Path.Value.Equals("/feedback_error.html"))
+                else if (context.Request.Path.Value.Equals("/feedback_error"))
                 {
                     await ReturnError(context);
-                    return true;
-                }
-                else if (context.Request.Path.Value.Equals("/feedback.post"))
-                {
-                    await ProcessPost(context);
                     return true;
                 }
             }
@@ -72,25 +83,19 @@ namespace Dumblog.View
         async Task ReturnGet(HttpContext context)
         {
             Console.WriteLine($"{nameof(FeedbackLoader)} ProcessGet");
-
-            var html = File.ReadAllText("Content/feedback.html");
-            await context.Response.WriteAsync(html);
+            await context.Response.WriteAsync(_indexHtml);
         }
 
         async Task ReturnError(HttpContext context)
         {
             Console.WriteLine($"{nameof(FeedbackLoader)} ReturnError");
-
-            var html = File.ReadAllText("Content/feedback_error.html");
-            await context.Response.WriteAsync(html);
+            await context.Response.WriteAsync(_errorHtml);
         }
 
         async Task ReturnSuccess(HttpContext context)
         {
             Console.WriteLine($"{nameof(FeedbackLoader)} ReturnSuccess");
-
-            var html = File.ReadAllText("Content/feedback_success.html");
-            await context.Response.WriteAsync(html);
+            await context.Response.WriteAsync(_successHtml);
         }
 
         // Redirects
@@ -98,13 +103,13 @@ namespace Dumblog.View
         void RedirectError(HttpContext context)
         {
             Console.WriteLine($"{nameof(FeedbackLoader)} RedirectError");
-            context.Response.Redirect("feedback_error.html");
+            context.Response.Redirect("feedback_error");
         }
 
         void RedirectSuccess(HttpContext context)
         {
             Console.WriteLine($"{nameof(FeedbackLoader)} RedirectSuccess");
-            context.Response.Redirect("feedback_success.html");
+            context.Response.Redirect("feedback_success");
         }
 
         // Post
@@ -161,7 +166,7 @@ namespace Dumblog.View
 
         bool ValidateModel(Model model)
         {
-            if (!captchaKey.Equals(model.captcha))
+            if (!config.captcha.Equals(model.captcha))
             {
                 Console.WriteLine($"{nameof(FeedbackLoader)} ERROR - captcha");
                 return false;

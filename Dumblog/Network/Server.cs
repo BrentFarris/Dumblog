@@ -1,6 +1,7 @@
 ﻿using Dumblog.View;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
 
 namespace Dumblog.Network
@@ -17,6 +18,7 @@ namespace Dumblog.Network
             _favicon = new FaviconLoader();
             _feeback = new FeedbackLoader(new FeedbackLoader.Config
             {
+                captcha = (DateTime.Now.Year + 1).ToString(),
                 from = "todo",
                 to = "todo",
                 subject = "Hello from DumBlog"
@@ -35,7 +37,7 @@ namespace Dumblog.Network
             {
                 return;
             }
-            
+
             string responseString = _loader.LoadFile(context.Request.Path.Value);
             System.Console.WriteLine($"Page is being requested: {context.Request.Path.Value}");
             await context.Response.WriteAsync(responseString);

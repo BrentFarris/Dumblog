@@ -1,0 +1,33 @@
+﻿<h1>Feedback Form</h1>
+<hr />
+<!--MESSAGE_REPLACE-->
+<form method="post" action="/feedback">
+    <p>
+        <label>
+            Name
+        </label>
+        <input type="text" name="name" required>
+    </p>
+    <p>
+        <label>
+            Email
+        </label>
+        <input type="email" name="email">
+    </p>
+    <p>
+        <label>
+            What year is it + 1 ? (Captcha)
+        </label>
+        <input type="number" name="captcha">
+    </p>
+    <p>
+        <label>
+            Comments
+        </label>
+        <textarea name="comments" maxlength="500" rows="5"></textarea>
+    </p>
+
+    <p>
+        <button>Submit Email</button>
+    </p>
+</form>
