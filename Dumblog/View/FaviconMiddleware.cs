@@ -6,17 +6,18 @@ namespace Dumblog.View
 {
     public class FaviconLoader
     {
-        public async Task<bool> TryProcess(HttpContext context)
+        public Task<bool> TryProcess(HttpContext context)
         {
+            bool r = false;
             try
             {
-                return context.Request.Path.Value.Equals("/favicon.ico");
+                r = context.Request.Path.Value.Equals("/favicon.ico");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{nameof(FeedbackLoader)} Exception {ex.Message}");
             }
-            return false;
+            return Task.FromResult(r);
         }
     }
 }
