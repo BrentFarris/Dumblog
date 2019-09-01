@@ -1,30 +1,30 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
-using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Dumblog.View
 {
+    public struct FeedbackModel
+    {
+        public string name;
+        public string email;
+        public string captcha;
+        public string comments;
+    }
+
+    public interface IFeedbackSender
+    {
+        Task Send(FeedbackModel model);
+    }
+
     /// <summary>
     /// Feedback Page Code
     /// </summary>
     public class FeedbackLoader
     {
-        struct Model
-        {
-            public string name;
-            public string email;
-            public string captcha;
-            public string comments;
-        }
-
         public struct Config
         {
-            public string to;
-            public string from;
-            public string subject;
             public string captcha;
         }
 
@@ -32,13 +32,15 @@ namespace Dumblog.View
         private const string MESSAGE_REPLACE_TEXT = "<!--MESSAGE_REPLACE-->";
 
         private Config config;
+        private IFeedbackSender sender;
         private readonly string _successHtml = string.Empty;
         private readonly string _errorHtml = string.Empty;
         private readonly string _indexHtml = string.Empty;
 
-        public FeedbackLoader(Config config)
+        public FeedbackLoader(Config config, IFeedbackSender sender)
         {
             this.config = config;
+            this.sender = sender;
 
             var template = File.ReadAllText("Content/template.html");
             _indexHtml = template.Replace(MARKDOWN_REPLACE_TEXT, File.ReadAllText("Content/Feedback/feedback.html"));
@@ -118,23 +120,13 @@ namespace Dumblog.View
         {
             Console.WriteLine($"{nameof(FeedbackLoader)} ProcessPost");
 
-            Model model = await DeserializeModel(context);
+            FeedbackModel model = await DeserializeModel(context);
 
             try
             {
                 if (ValidateModel(model))
                 {
-                    var smtp = new SmtpClient();
-
-                    var builder = new StringBuilder();
-
-                    builder.AppendLine($"name: {model.name}");
-                    builder.AppendLine($"email: {model.email}");
-                    builder.AppendLine(string.Empty);
-                    builder.AppendLine($"{model.comments}");
-
-                    var mail = new MailMessage(config.from, config.to, config.subject, builder.ToString());
-                    smtp.Send(mail);
+                    await sender.Send(model);
 
                     RedirectSuccess(context);
                 }
@@ -151,20 +143,20 @@ namespace Dumblog.View
             RedirectError(context);
         }
 
-        async Task<Model> DeserializeModel(HttpContext content)
+        async Task<FeedbackModel> DeserializeModel(HttpContext content)
         {
             var form = await content.Request.ReadFormAsync();
 
-            return new Model
+            return new FeedbackModel
             {
-                captcha = form[nameof(Model.captcha)],
-                comments = form[nameof(Model.comments)],
-                email = form[nameof(Model.email)],
-                name = form[nameof(Model.name)],
+                captcha = form[nameof(FeedbackModel.captcha)],
+                comments = form[nameof(FeedbackModel.comments)],
+                email = form[nameof(FeedbackModel.email)],
+                name = form[nameof(FeedbackModel.name)],
             };
         }
 
-        bool ValidateModel(Model model)
+        bool ValidateModel(FeedbackModel model)
         {
             if (!config.captcha.Equals(model.captcha))
             {

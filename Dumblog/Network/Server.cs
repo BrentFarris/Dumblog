@@ -11,18 +11,22 @@ namespace Dumblog.Network
         PageLoader _loader;
         FaviconLoader _favicon;
         FeedbackLoader _feeback;
+        IFeedbackSender _feebackSender;
 
         public void Configure(IApplicationBuilder app)
         {
             _loader = new PageLoader();
             _favicon = new FaviconLoader();
+            _feebackSender = new FeedbackSmtpSender(new FeedbackSmtpSender.Config
+            {
+                from = "",
+                to = "",
+                subject = "Hello from DumBlog"
+            });
             _feeback = new FeedbackLoader(new FeedbackLoader.Config
             {
                 captcha = (DateTime.Now.Year + 1).ToString(),
-                from = "todo",
-                to = "todo",
-                subject = "Hello from DumBlog"
-            });
+            }, _feebackSender);
             app.Run(HttpRequestDelegate);
         }
 
