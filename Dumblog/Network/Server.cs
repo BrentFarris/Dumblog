@@ -23,6 +23,14 @@ namespace Dumblog.Network
                 to = "",
                 subject = "Hello from DumBlog"
             });
+            //_feebackSender = new FeedbackDiscordSender(new FeedbackDiscordSender.Config
+            //{
+            //    clientId = "",
+            //    secret = "",
+            //    channelId = "",
+            //    code = "",
+            //    redirectUrl = ""
+            //});
             _feeback = new FeedbackLoader(new FeedbackLoader.Config
             {
                 captcha = (DateTime.Now.Year + 1).ToString(),
@@ -32,7 +40,7 @@ namespace Dumblog.Network
 
         private async Task HttpRequestDelegate(HttpContext context)
         {
-            if (await _favicon.TryProcess(context))
+            if (_favicon.TryProcess(context))
             {
                 return;
             }

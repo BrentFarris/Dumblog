@@ -6,7 +6,7 @@ namespace Dumblog.View
 {
     public class FaviconLoader
     {
-        public Task<bool> TryProcess(HttpContext context)
+        public bool TryProcess(HttpContext context)
         {
             bool r = false;
             try
@@ -17,7 +17,7 @@ namespace Dumblog.View
             {
                 Console.WriteLine($"{nameof(FeedbackLoader)} Exception {ex.Message}");
             }
-            return Task.FromResult(r);
+            return r;
         }
     }
 }
