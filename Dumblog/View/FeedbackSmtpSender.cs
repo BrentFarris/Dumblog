@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,8 @@ namespace Dumblog.View
             public string to;
             public string from;
             public string subject;
+            public string userName;
+            public string password;
         }
 
         private Config config;
@@ -23,6 +26,11 @@ namespace Dumblog.View
         public Task Send(FeedbackModel model)
         {
             var smtp = new SmtpClient();
+
+            if (!string.IsNullOrEmpty(config.userName))
+            {
+                smtp.Credentials = new NetworkCredential(config.userName, config.password);
+            }
 
             var builder = new StringBuilder();
 
