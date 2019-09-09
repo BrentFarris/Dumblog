@@ -48,13 +48,19 @@ namespace Dumblog.View
                         CreateNoWindow = true,
                     }
                 };
+                process.EnableRaisingEvents = true;
                 process.Start();
-                RefreshRecentList();
+                process.Exited += GitPullComplete;
             }
             catch
             {
                 Console.WriteLine("Failed to start the git process for updating");
             }
+        }
+
+        private void GitPullComplete(object sender, EventArgs e)
+        {
+            RefreshRecentList();
         }
 
         private void RefreshRecentList()
