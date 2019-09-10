@@ -31,6 +31,6 @@ I love geometry, if I asked you to find the exact center of a line segment, how 
 
 ![center-of-line-segment-using-circles][1]{style=display:block;max-width:50%;margin:auto;}
 
-[^1]: A very popular paradigm in computer science where a strictly defined structure of data is contained 
+[^1]: A very popular paradigm in computer science where a series of bytes are strictly defined structures of data usually composed of various other objects or primitive "types". These objects often manipulate their own members privately through member functions rather than publicly through functions outside it's own scope.
 
 [1]: https://raw.githubusercontent.com/BrentFarris/Dumblog/master/Dumblog/Content/Images/center-of-line-segment-using-circles.gif
