@@ -29,7 +29,7 @@ One of the common things that people claim is that I will wind up writing more c
 ## Use primitives to create more complex tools
 I love geometry, if I asked you to find the exact center of a line segment, how would you do this? There's a catch, I'm not going to tell you the length of the line segment, the only things you are allowed to know is that circles exist and what a point is. Some of you may immediately answer that having two circles who's center is at the ends of the segment and intersect each other you could draw a line between the intersection points peak and valley to bisect a line segment, and in doing so, find the exact center of the line segment. By using a primitive box of tools such as a line and a circle you can create a limitless amount of concepts and other useful tools. In this way you should try to keep your C code as primitive and simple as possible so that the combination of the primitives can create complex concepts easily. This is something that is easily achievable because of the limitations of the language which often make you think outside of the box.
 
-![center-of-line-segment-using-circles][1]{style=max-width:50%;text-align:center;}
+![center-of-line-segment-using-circles][1]{style=display:block;max-width:50%;margin:auto;}
 
 [^1]: A very popular paradigm in computer science where a strictly defined structure of data is contained 
 
