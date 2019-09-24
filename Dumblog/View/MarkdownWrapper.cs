@@ -4,7 +4,7 @@ namespace Dumblog.View
 {
     public class MarkdownWrapper
     {
-        private MarkdownPipeline _pipeline;
+        private readonly MarkdownPipeline _pipeline;
 
         public MarkdownWrapper()
         {

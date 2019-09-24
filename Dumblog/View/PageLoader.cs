@@ -8,6 +8,7 @@ using System.Text;
 
 namespace Dumblog.View
 {
+
     public class PageLoader
     {
         private const int NEW_UPDATES_PAGES_COUNT = 10;
@@ -15,7 +16,7 @@ namespace Dumblog.View
         private const string RECENT_LIST_REPLACE_TEXT = "RECENT_LIST";
         private readonly string _template = string.Empty;
         private string _indexRecents = string.Empty;
-        MarkdownWrapper _markdown = new MarkdownWrapper();
+        private readonly MarkdownWrapper _markdown = new MarkdownWrapper();
 
         public PageLoader()
         {
